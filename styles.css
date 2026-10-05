@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap');
+
+:root {
+  color-scheme: light;
+  --ink: #26352d;
+  --muted: #778176;
+  --cream: #f6f0df;
+  --paper: #fffdf7;
+  --green: #417858;
+  --orange: #f5a14a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 8% 18%, rgba(242, 197, 121, .12) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 74%, rgba(242, 197, 121, .12) 0 2px, transparent 3px),
+    var(--cream);
+  background-size: 28px 28px, 36px 36px, auto;
+  font-family: "DM Sans", sans-serif;
+}
+
+button { font: inherit; }
+
+.game-shell { max-width: 1260px; margin: 0 auto; padding: 25px 44px 16px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.wordmark { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); font-size: 13px; letter-spacing: .01em; text-decoration: none; }
+.wordmark strong { font-weight: 800; }
+.brand-icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; background: #e7ead8; font-size: 17px; }
+.top-note { color: #778176; font-size: 11px; font-weight: 600; }
+.status-dot { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: #82ad73; vertical-align: 1px; }
+
+.game-layout { display: grid; grid-template-columns: minmax(0, 830px) 270px; align-items: center; gap: 34px; }
+.game-column { min-width: 0; }
+.intro { margin: 0 0 16px 3px; }
+.eyebrow { margin: 0 0 3px; color: #7b876f; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 3px; font-family: Fredoka, sans-serif; font-size: clamp(36px, 5vw, 47px); font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+h1 span { color: #e88139; }
+.intro-copy { margin: 8px 0 0; color: #778176; font-size: 12px; }
+
+.game-frame { overflow: hidden; padding: 12px; border: 1px solid #e9e1cd; border-radius: 18px; background: var(--paper); box-shadow: 0 12px 30px rgba(81, 67, 41, .09); }
+.hud { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.hud-item { display: flex; align-items: center; min-width: 0; height: 43px; padding: 0 12px; border-radius: 10px; background: #f6f4e9; }
+.hud-icon { margin-right: 8px; font-size: 17px; }
+.hud-label { color: #8c9383; font-size: 8px; font-weight: 800; letter-spacing: .1em; }
+.hud-item strong { margin-left: auto; color: var(--ink); font-family: Fredoka, sans-serif; font-size: 16px; }
+.pace-card strong { font-size: 13px; }
+.canvas-wrap { position: relative; overflow: hidden; border-radius: 11px; background: #b9d9bd; line-height: 0; }
+canvas { display: block; width: 100%; height: auto; aspect-ratio: 900 / 560; }
+.game-overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(25, 46, 38, .22); transition: opacity .2s ease, visibility .2s ease; }
+.game-overlay.is-hidden { visibility: hidden; opacity: 0; pointer-events: none; }
+.overlay-card { width: min(330px, 94%); padding: 23px 24px 21px; border: 1px solid rgba(255, 255, 255, .85); border-radius: 18px; background: rgba(255, 253, 247, .96); text-align: center; box-shadow: 0 12px 40px rgba(38, 53, 45, .2); }
+.overlay-sticker { display: grid; width: 49px; height: 49px; margin: -44px auto 10px; place-items: center; border: 4px solid var(--paper); border-radius: 50%; background: #fce5bf; font-size: 24px; }
+.overlay-kicker { margin: 0 0 7px; color: #e8873e; font-size: 9px; font-weight: 800; letter-spacing: .16em; }
+.overlay-card h2 { margin-bottom: 7px; font-family: Fredoka, sans-serif; font-size: 26px; line-height: 1.03; }
+.overlay-copy { margin: 0 0 15px; color: #7b8478; font-size: 11px; line-height: 1.5; }
+.play-button { min-width: 166px; padding: 11px 17px; border: 0; border-radius: 9px; color: white; background: #467c59; box-shadow: 0 3px 0 #315d43; cursor: pointer; font-size: 11px; font-weight: 800; transition: transform .15s ease, background .15s ease; }
+.play-button:hover { transform: translateY(-1px); background: #386c4c; }
+.play-button:active { transform: translateY(2px); box-shadow: 0 1px 0 #315d43; }
+.play-button span { margin-left: 10px; font-size: 15px; }
+.game-footer { display: flex; align-items: center; justify-content: space-between; padding: 11px 3px 0; color: #8a9084; font-size: 9px; }
+.keycap { display: inline-grid; width: 17px; height: 17px; margin-right: 3px; place-items: center; border: 1px solid #e7e4d8; border-radius: 4px; background: #fbfaf4; color: #596355; font-size: 10px; font-style: normal; font-weight: 800; }
+.footer-tip { color: #9a886f; }
+.footer-tip span { color: #efa743; }
+
+.side-panel { display: flex; flex-direction: column; gap: 13px; padding-top: 57px; }
+.mission-card { position: relative; overflow: hidden; min-height: 271px; padding: 19px; border: 1px solid #e6ddc6; border-radius: 15px; background: #fbf8ec; }
+.card-heading { display: flex; align-items: center; gap: 7px; color: #778176; font-size: 9px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.sun-icon { color: #eda64c; font-size: 15px; }
+.mission-card h2 { position: relative; z-index: 1; margin: 18px 0 8px; font-family: Fredoka, sans-serif; font-size: 27px; line-height: 1.06; letter-spacing: -.02em; }
+.mission-card > p { position: relative; z-index: 1; max-width: 210px; margin-bottom: 22px; color: #7c8477; font-size: 10px; line-height: 1.6; }
+.mission-progress { position: relative; z-index: 1; }
+.progress-copy { display: flex; justify-content: space-between; margin-bottom: 6px; color: #81877b; font-size: 8px; }
+.progress-copy strong { color: #4a614d; font-size: 9px; }
+.progress-track { overflow: hidden; height: 6px; border-radius: 9px; background: #e8e6d8; }
+.progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #83ad73, #efb250); transition: width .3s ease; }
+.mission-hint { display: block; margin-top: 8px; color: #a08f70; font-size: 8px; }
+.doodle-apple { position: absolute; top: 70px; right: 0; opacity: .13; font-size: 90px; transform: rotate(18deg); }
+.tip-card { display: flex; gap: 10px; padding: 14px; border: 1px solid #eadfc8; border-radius: 12px; background: #fffaf0; }
+.tip-icon { display: grid; flex: 0 0 29px; height: 29px; place-items: center; border-radius: 9px; background: #fbebce; font-size: 15px; }
+.tip-card h3 { margin: 1px 0 4px; font-size: 10px; }
+.tip-card p { margin: 0; color: #85897d; font-size: 9px; line-height: 1.55; }
+.mascot-note { display: flex; align-items: center; gap: 9px; padding: 3px 7px; color: #8a8b7d; font-size: 9px; line-height: 1.55; }
+.mascot-note > span:first-child { font-size: 23px; }
+.mascot-note strong { color: #64715e; }
+.mobile-controls { display: none; }
+.page-footer { margin-top: 19px; color: #a19c88; font-size: 8px; font-weight: 800; letter-spacing: .13em; text-align: center; }
+.page-footer span { margin-left: 5px; color: #e88b61; }
+
+@media (max-width: 980px) {
+  .game-shell { padding: 21px 24px 14px; }
+  .game-layout { grid-template-columns: minmax(0, 1fr) 230px; gap: 22px; }
+  .side-panel { padding-top: 54px; }
+  .mission-card { padding: 16px; }
+  .hud-item { padding: 0 8px; }
+}
+
+@media (max-width: 720px) {
+  .game-shell { max-width: 560px; padding: 17px 16px 13px; }
+  .topbar { margin-bottom: 22px; }
+  .game-layout { display: block; }
+  .intro { margin-bottom: 13px; }
+  h1 { font-size: 39px; }
+  .intro-copy { max-width: 330px; line-height: 1.5; }
+  .game-frame { padding: 8px; border-radius: 15px; }
+  .hud { gap: 5px; margin-bottom: 7px; }
+  .hud-item { height: 39px; padding: 0 7px; border-radius: 8px; }
+  .hud-icon { margin-right: 5px; font-size: 14px; }
+  .hud-label { font-size: 7px; }
+  .hud-item strong { font-size: 14px; }
+  .pace-card strong { font-size: 11px; }
+  .game-footer { align-items: flex-start; gap: 8px; font-size: 8px; }
+  .footer-tip { max-width: 142px; text-align: right; line-height: 1.4; }
+  .mobile-controls { display: flex; align-items: center; justify-content: space-between; margin: 11px 4px 0; color: #899080; font-size: 8px; font-weight: 800; letter-spacing: .12em; }
+  .move-button { display: grid; width: 43px; height: 38px; place-items: center; border: 1px solid #e5dec9; border-radius: 10px; color: #456f50; background: #fffdf7; box-shadow: 0 2px 0 #dfd8c6; cursor: pointer; font-size: 19px; }
+  .move-button:active { transform: translateY(1px); box-shadow: none; }
+  .side-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding-top: 15px; }
+  .mission-card { grid-row: span 2; min-height: 194px; padding: 14px; }
+  .mission-card h2 { margin: 13px 0 6px; font-size: 23px; }
+  .mission-card > p { margin-bottom: 14px; font-size: 9px; }
+  .doodle-apple { top: 48px; font-size: 68px; }
+  .tip-card { align-items: flex-start; padding: 11px; }
+  .tip-card p { font-size: 8px; }
+  .mascot-note { padding: 2px; font-size: 8px; }
+  .mascot-note > span:first-child { font-size: 18px; }
+  .page-footer { margin-top: 16px; font-size: 7px; }
+}
+
+@media (max-width: 390px) {
+  .game-shell { padding-right: 10px; padding-left: 10px; }
+  .top-note { font-size: 9px; }
+  .hud-item { padding: 0 5px; }
+  .hud-icon { margin-right: 3px; }
+  .hud-label { font-size: 6px; }
+  .footer-tip { max-width: 120px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

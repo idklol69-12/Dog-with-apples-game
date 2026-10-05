@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f0df">
+    <title>Apple Dash — Pup on the Road</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <a class="wordmark" href="#" aria-label="Apple Dash home">
+          <span class="brand-icon" aria-hidden="true">🐾</span>
+          <span>little <strong>adventure</strong></span>
+        </a>
+        <span class="top-note"><span class="status-dot"></span> A sunny day for a run</span>
+      </header>
+
+      <section class="game-layout" aria-label="Apple Dash game">
+        <div class="game-column">
+          <div class="intro">
+            <p class="eyebrow">A tiny tail-wagging challenge</p>
+            <h1>Apple <span>Dash</span></h1>
+            <p class="intro-copy">Help Biscuit gather the apples and dodge the busy traffic!</p>
+          </div>
+
+          <div class="game-frame">
+            <div class="hud" aria-label="Game status">
+              <div class="hud-item score-card">
+                <span class="hud-icon" aria-hidden="true">🍎</span>
+                <span class="hud-label">APPLES</span>
+                <strong id="score">00</strong>
+              </div>
+              <div class="hud-item pace-card">
+                <span class="hud-icon" aria-hidden="true">⚡</span>
+                <span class="hud-label">PACE</span>
+                <strong id="pace">Easy</strong>
+              </div>
+              <div class="hud-item best-card">
+                <span class="hud-icon" aria-hidden="true">🏆</span>
+                <span class="hud-label">BEST</span>
+                <strong id="best">00</strong>
+              </div>
+            </div>
+
+            <div class="canvas-wrap">
+              <canvas id="game" width="900" height="560" aria-label="Dog running along a road, collecting apples and avoiding traffic">
+                Your browser does not support the canvas game.
+              </canvas>
+              <div class="game-overlay" id="overlay">
+                <div class="overlay-card">
+                  <span class="overlay-sticker" id="overlay-sticker" aria-hidden="true">🐶</span>
+                  <p class="overlay-kicker" id="overlay-kicker">READY, BISCUIT?</p>
+                  <h2 id="overlay-title">Let’s go<br>apple hunting!</h2>
+                  <p class="overlay-copy" id="overlay-copy">Collect the apples. Watch out for cars and buses!</p>
+                  <button class="play-button" id="play-button" type="button">Start running <span aria-hidden="true">→</span></button>
+                </div>
+              </div>
+            </div>
+            <div class="game-footer">
+              <span><i class="keycap">←</i><i class="keycap">→</i> or <i class="keycap">A</i><i class="keycap">D</i> to move</span>
+              <span class="footer-tip"><span aria-hidden="true">✦</span> Every apple makes the road a little faster</span>
+            </div>
+          </div>
+          <div class="mobile-controls" aria-label="Touch controls">
+            <button type="button" class="move-button" data-move="-1" aria-label="Move left">←</button>
+            <span>STEER BISCUIT</span>
+            <button type="button" class="move-button" data-move="1" aria-label="Move right">→</button>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="mission-card">
+            <div class="card-heading">
+              <span class="sun-icon" aria-hidden="true">☀</span>
+              <span>today’s mission</span>
+            </div>
+            <h2>Fetch the<br>good stuff.</h2>
+            <p>Biscuit has a serious apple-shaped appetite. Help him grab as many as you can!</p>
+            <div class="mission-progress">
+              <div class="progress-copy"><span>Apples collected</span><strong id="mission-count">0 / 10</strong></div>
+              <div class="progress-track"><span id="mission-progress"></span></div>
+              <span class="mission-hint" id="mission-hint">A little snack goes a long way.</span>
+            </div>
+            <div class="doodle-apple" aria-hidden="true">🍎</div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon" aria-hidden="true">💡</div>
+            <div>
+              <h3>Quick tip</h3>
+              <p>Traffic moves faster as your score grows. Keep your eyes on the next lane!</p>
+            </div>
+          </div>
+          <div class="mascot-note"><span aria-hidden="true">🐕</span><span>Good dog. Great driver.<br><strong>Questionable snack choices.</strong></span></div>
+        </aside>
+      </section>
+      <footer class="page-footer">MADE FOR GOOD DOGS &amp; GREAT LITTLE ADVENTURES <span aria-hidden="true">♥</span></footer>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>
