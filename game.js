@@ -84,14 +84,15 @@
   }
 
   function currentSpeed() {
-    return 185 + Math.min(score, 35) * 6 + Math.min(elapsed, 90) * 0.7;
+    return 185 + Math.min(score, 35) * 6 + elapsed * 10;
   }
 
   function paceName() {
-    if (score >= 18) return "Zoomies!";
-    if (score >= 9) return "Quick";
-    if (score >= 3) return "Warming up";
-    return "Easy";
+    const multiplier = currentSpeed() / 185;
+    if (multiplier < 1.2) return "Easy";
+    if (multiplier < 1.5) return "Picking up";
+    if (multiplier < 1.9) return "Fast";
+    return `Zoomies x${multiplier.toFixed(1)}`;
   }
 
   function updateHud() {
@@ -185,8 +186,9 @@
     }
 
     for (const item of objects) {
+      const previousY = item.y;
       item.y += currentSpeed() * dt;
-      if (item.kind === "apple" && item.lane === lane && item.y > DOG_Y - 39 && item.y < DOG_Y + 30) {
+      if (item.kind === "apple" && item.lane === lane && item.y > DOG_Y - 39 && previousY < DOG_Y + 30) {
         item.collected = true;
         score += 1;
         particles.push(...makeParticles(laneCenter(lane), DOG_Y - 17));
@@ -196,7 +198,7 @@
           saveBest(best);
         }
         updateHud();
-      } else if (item.kind !== "apple" && item.lane === lane && item.y > DOG_Y - 45 && item.y < DOG_Y + 33) {
+      } else if (item.kind !== "apple" && item.lane === lane && item.y > DOG_Y - 45 && previousY < DOG_Y + 33) {
         item.hit = true;
         objects = objects.filter((object) => !object.collected && !object.hit);
         endGame();
@@ -204,6 +206,8 @@
       }
     }
     objects = objects.filter((item) => !item.collected && !item.hit && item.y < HEIGHT + 100);
+    const pace = paceName();
+    if (paceLabel.textContent !== pace) paceLabel.textContent = pace;
     particles = particles.filter((particle) => particle.life > 0);
     for (const particle of particles) {
       particle.x += particle.vx * dt;
