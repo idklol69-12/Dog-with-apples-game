@@ -1,0 +1,5 @@
+{
+  "name": "Apple Dash Lol",
+  "entrypoint": "../LSindex.html",
+  "launcher": "Launch.bat"
+}

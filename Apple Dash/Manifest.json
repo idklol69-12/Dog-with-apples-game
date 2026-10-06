@@ -1,0 +1,5 @@
+{
+  "name": "Apple Dash",
+  "entrypoint": "../index.html",
+  "launcher": "Launch.bat"
+}
