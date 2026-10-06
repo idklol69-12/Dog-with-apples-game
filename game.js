@@ -15,6 +15,7 @@
   const missionCount = document.getElementById("mission-count");
   const missionProgress = document.getElementById("mission-progress");
   const missionHint = document.getElementById("mission-hint");
+  const hasHumanSidekick = document.body.dataset.gameVariant === "human-dog";
 
   const WIDTH = 900;
   const HEIGHT = 560;
@@ -100,7 +101,9 @@
     paceLabel.textContent = paceName();
     missionCount.textContent = `${Math.min(score, 10)} / 10`;
     missionProgress.style.width = `${Math.min(score / 10, 1) * 100}%`;
-    missionHint.textContent = score >= 10 ? "Apple expert! Biscuit approves." : "A little snack goes a long way.";
+    missionHint.textContent = score >= 10
+      ? (hasHumanSidekick ? "Snack team champions!" : "Apple expert! Biscuit approves.")
+      : "A little snack goes a long way.";
     bestLabel.textContent = formatScore(best);
   }
 
@@ -127,11 +130,15 @@
     cancelAnimationFrame(animationFrame);
     playSound("hit");
     overlaySticker.textContent = "🥺";
-    overlayKicker.textContent = "OH, BISCUIT!";
+    overlayKicker.textContent = hasHumanSidekick ? "OH, SNACK TEAM!" : "OH, BISCUIT!";
     overlayTitle.innerHTML = `You found ${score} apple${score === 1 ? "" : "s"}!`;
     overlayCopy.textContent = isNewBest
-      ? "That’s a new best! Biscuit is already dreaming about the next run."
-      : "The traffic won this round, but Biscuit is ready for another try.";
+      ? (hasHumanSidekick
+        ? "That’s a new best! Your hungry pup is already eyeing the next apple."
+        : "That’s a new best! Biscuit is already dreaming about the next run.")
+      : (hasHumanSidekick
+        ? "Traffic got in the way, but you and your pup are ready for another run."
+        : "The traffic won this round, but Biscuit is ready for another try.");
     playButton.innerHTML = 'Run it back <span aria-hidden="true">↻</span>';
     overlay.classList.remove("is-hidden");
     draw();
@@ -393,12 +400,12 @@
     ctx.restore();
   }
 
-  function drawDog() {
-    const x = laneCenter(lane);
+  function drawDog(x = laneCenter(lane), yOffset = 0, scale = 1) {
     const bouncing = state === "playing" ? Math.sin(elapsed * 13) * 3 : 0;
-    const y = DOG_Y + bouncing;
+    const y = DOG_Y + yOffset + bouncing;
     ctx.save();
     ctx.translate(x, y);
+    ctx.scale(scale, scale);
 
     ctx.fillStyle = "rgba(30, 38, 32, .23)";
     ctx.beginPath();
@@ -469,6 +476,76 @@
     ctx.restore();
   }
 
+  function drawHumanAndDog() {
+    const x = laneCenter(lane);
+    const bob = state === "playing" ? Math.sin(elapsed * 13) * 3 : 0;
+
+    ctx.save();
+    ctx.translate(x - 24, DOG_Y + bob);
+    ctx.fillStyle = "rgba(30, 38, 32, .2)";
+    ctx.beginPath();
+    ctx.ellipse(0, 32 - bob, 22, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Running legs and sneakers
+    ctx.strokeStyle = "#334f70";
+    ctx.lineWidth = 8;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(-5, 11);
+    ctx.lineTo(-10 + Math.sin(elapsed * 13) * 4, 27);
+    ctx.moveTo(5, 11);
+    ctx.lineTo(11 - Math.sin(elapsed * 13) * 4, 27);
+    ctx.stroke();
+    roundedRect(-19 + Math.sin(elapsed * 13) * 4, 23, 15, 7, 3, "#f1eee0");
+    roundedRect(4 - Math.sin(elapsed * 13) * 4, 23, 15, 7, 3, "#f1eee0");
+
+    // Shirt, backpack straps, and swinging arms
+    ctx.strokeStyle = "#d8a16f";
+    ctx.lineWidth = 7;
+    ctx.beginPath();
+    ctx.moveTo(-11, -4);
+    ctx.lineTo(-19, 9 + Math.sin(elapsed * 13) * 3);
+    ctx.moveTo(11, -4);
+    ctx.lineTo(19, 9 - Math.sin(elapsed * 13) * 3);
+    ctx.stroke();
+    roundedRect(-13, -12, 26, 28, 8, "#598b70");
+    ctx.strokeStyle = "#e9c778";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-8, -8);
+    ctx.lineTo(-5, 9);
+    ctx.moveTo(8, -8);
+    ctx.lineTo(5, 9);
+    ctx.stroke();
+
+    // Ears, hair, and a smiling face
+    ctx.fillStyle = "#d8a16f";
+    ctx.beginPath();
+    ctx.arc(0, -23, 15, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#49392f";
+    ctx.beginPath();
+    ctx.arc(0, -28, 15, Math.PI, Math.PI * 2);
+    ctx.lineTo(13, -24);
+    ctx.quadraticCurveTo(4, -29, -12, -21);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = "#344239";
+    ctx.beginPath();
+    ctx.arc(-5, -22, 1.4, 0, Math.PI * 2);
+    ctx.arc(5, -22, 1.4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#805d45";
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.arc(0, -17, 4, 0.15, Math.PI - 0.15);
+    ctx.stroke();
+    ctx.restore();
+
+    drawDog(x + 31, 8, 0.56);
+  }
+
   function drawParticles() {
     for (const particle of particles) {
       ctx.globalAlpha = Math.max(particle.life / 0.65, 0);
@@ -488,7 +565,8 @@
       if (item.kind === "apple") drawApple(item);
       else drawVehicle(item);
     }
-    drawDog();
+    if (hasHumanSidekick) drawHumanAndDog();
+    else drawDog();
     drawParticles();
   }
 
@@ -538,16 +616,20 @@
     if (state === "playing") {
       state = "paused";
       cancelAnimationFrame(animationFrame);
-      overlaySticker.textContent = "🐾";
+      overlaySticker.textContent = hasHumanSidekick ? "🧑🐶" : "🐾";
       overlayKicker.textContent = "TAKE A BREATHER";
       overlayTitle.innerHTML = "Ready when<br>you are!";
-      overlayCopy.textContent = "Biscuit is taking a quick sniff break.";
+      overlayCopy.textContent = hasHumanSidekick
+        ? "You and your pup are taking a quick sniff break."
+        : "Biscuit is taking a quick sniff break.";
       playButton.innerHTML = 'Keep running <span aria-hidden="true">→</span>';
       overlay.classList.remove("is-hidden");
     }
   });
 
   document.getElementById("mission-progress").addEventListener("transitionend", () => {
-    if (score === 10) missionHint.textContent = "Apple expert! Biscuit approves.";
+    if (score === 10) {
+      missionHint.textContent = hasHumanSidekick ? "Snack team champions!" : "Apple expert! Biscuit approves.";
+    }
   });
 })();
